@@ -29,7 +29,7 @@ public class Grade implements Serializable{
     private Float note;
 
     //bi-directional many-to-one association to Association
-    @ManyToOne
+    @OneToOne
     @JoinColumn( name = "association_id" )
     private Association association;
 
