@@ -6,10 +6,8 @@ import co.edu.unal.software_engineering.labs.pojo.LoginUserPOJO;
 import co.edu.unal.software_engineering.labs.pojo.RegisterUserPOJO;
 import co.edu.unal.software_engineering.labs.service.RoleService;
 import co.edu.unal.software_engineering.labs.service.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,23 +18,20 @@ import java.util.Collections;
 @RestController
 public class UserController{
 
-    private final UserService userService;
+    private UserService userService;
 
-    private final RoleService roleService;
+    private RoleService roleService;
 
-    public UserController( UserService userService, RoleService roleService ){
+    private PasswordEncoder passwordEncoder;
+
+    public UserController( UserService userService, RoleService roleService, PasswordEncoder passwordEncoder ){
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-
-    @Bean
-    public PasswordEncoder passwordEncoder( ){
-        return new BCryptPasswordEncoder( );
-    }
-
-    @PostMapping( value = { "/registro/{roleId}" } )
-    public ResponseEntity register( @PathVariable Integer roleId, @RequestBody RegisterUserPOJO userPOJO ){
+    @PostMapping( value = { "/registro/nuevo-usuario/rol/{roleId}" } )
+    public ResponseEntity registerNewUser( @PathVariable Integer roleId, @RequestBody RegisterUserPOJO userPOJO ){
         Role role = roleService.findById( roleId );
         User existingUser = userService.findByUsername( userPOJO.getUsername( ) );
         if( role == null || existingUser != null || !userService.isRightUser( userPOJO ) ){
@@ -46,19 +41,19 @@ public class UserController{
         newUser.setNames( userPOJO.getNames( ).toUpperCase( ) );
         newUser.setSurnames( userPOJO.getSurnames( ).toUpperCase( ) );
         newUser.setUsername( userPOJO.getUsername( ).toLowerCase( ) );
-        newUser.setPassword( passwordEncoder( ).encode( userPOJO.getPassword( ) ) );
+        newUser.setPassword( passwordEncoder.encode( userPOJO.getPassword( ) ) );
         newUser.setRoles( Collections.singletonList( role ) );
         userService.save( newUser );
         return new ResponseEntity( HttpStatus.CREATED );
     }
 
-    @PostMapping( value = { "/registro/nuevo-rol/{roleId}" } )
+    @PostMapping( value = { "/registro/usuario/rol/{roleId}" } )
     public ResponseEntity registerRoleToUser( @PathVariable Integer roleId, @RequestBody LoginUserPOJO userPOJO ){
         Role role = roleService.findById( roleId );
         User existingUser = userService.findByUsername( userPOJO.getUsername( ) );
-        if( role == null || existingUser == null || existingUser.getRoles( ).contains( role ) ){
+        if( role == null || existingUser == null || existingUser.hasRole( role ) ){
             return new ResponseEntity( HttpStatus.BAD_REQUEST );
-        }else if( !passwordEncoder( ).matches( userPOJO.getPassword( ), existingUser.getPassword( ) ) ){
+        }else if( !passwordEncoder.matches( userPOJO.getPassword( ), existingUser.getPassword( ) ) ){
             return new ResponseEntity( HttpStatus.UNAUTHORIZED );
         }
         existingUser.addRole( role );

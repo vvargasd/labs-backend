@@ -37,7 +37,7 @@ public class User implements Serializable{
 
     //bi-directional many-to-many association to Role
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable( name = "user_role", joinColumns = { @JoinColumn( name = "user_id" ) },
             inverseJoinColumns = { @JoinColumn( name = "role_id" ) } )
     private List<Role> roles;
@@ -108,6 +108,10 @@ public class User implements Serializable{
         roles.add( role );
     }
 
+    public boolean hasRole( Role role ){
+        return roles.contains( role );
+    }
+
     @Override
     public boolean equals( Object object ){
         if( !(object instanceof User) ) return false;
@@ -118,4 +122,5 @@ public class User implements Serializable{
     public int hashCode( ){
         return id;
     }
+
 }
