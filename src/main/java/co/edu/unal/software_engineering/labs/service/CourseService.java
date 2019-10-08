@@ -14,6 +14,10 @@ public class CourseService{
         this.courseRepository = courseRepository;
     }
 
+    public Course findById( Integer id ){
+        return courseRepository.findById( id ).orElse( null );
+    }
+
     public void save( Course course ){
         courseRepository.save( course );
     }
