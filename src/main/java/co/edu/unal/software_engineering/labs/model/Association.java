@@ -58,6 +58,14 @@ public class Association implements Serializable{
         userRole = new UserRole( );
     }
 
+    public Association( User user, Role role, Course course, Period period ){
+        userRole = new UserRole( );
+        userRole.setUser( user );
+        userRole.setRole( role );
+        this.course = course;
+        this.period = period;
+    }
+
     /**
      * Getters and Setters
      */
