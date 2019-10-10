@@ -1,6 +1,7 @@
 package co.edu.unal.software_engineering.labs.auth.service;
 
 import co.edu.unal.software_engineering.labs.auth.model.UserDetailsImpl;
+import co.edu.unal.software_engineering.labs.model.User;
 import co.edu.unal.software_engineering.labs.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername( String username ) throws UsernameNotFoundException{
-        return new UserDetailsImpl( userService.findByUsername( username ) );
+        User user = userService.findByUsername( username );
+        if( user == null ){
+            throw new UsernameNotFoundException( "" );
+        }
+        return new UserDetailsImpl( user );
     }
 
 }
