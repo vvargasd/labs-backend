@@ -3,7 +3,6 @@ package co.edu.unal.software_engineering.labs.service;
 import co.edu.unal.software_engineering.labs.model.User;
 import co.edu.unal.software_engineering.labs.pojo.RegisterUserPOJO;
 import co.edu.unal.software_engineering.labs.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 

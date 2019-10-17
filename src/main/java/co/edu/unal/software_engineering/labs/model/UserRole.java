@@ -24,7 +24,9 @@ class UserRole implements Serializable{
      * Constructors
      */
 
-    public UserRole( ){ }
+    UserRole( ){
+        userRolePK = new UserRolePK( );
+    }
 
     /**
      * Getters and Setters
@@ -92,7 +94,7 @@ class UserRole implements Serializable{
          * Constructor
          */
 
-        public UserRolePK( ){ }
+        UserRolePK( ){ }
 
         public UserRolePK( User user, Role role ){
             this.user = user;

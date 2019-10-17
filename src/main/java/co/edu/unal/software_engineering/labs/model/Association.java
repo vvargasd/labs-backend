@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
  * The persistent class for the association database table.
+ * @author Sebastián Moreno
  */
 @Entity
 @Table( name = "association", schema = "public" )
@@ -47,14 +47,24 @@ public class Association implements Serializable{
 
     //bi-directional many-to-one association to Grade
     @JsonIgnore
-    @OneToMany( mappedBy = "association" )
-    private List<Grade> grades;
+    @OneToOne( mappedBy = "association" )
+    private Grade grade;
 
     /**
      * Constructors
      */
 
-    public Association( ){ }
+    public Association( ){
+        userRole = new UserRole( );
+    }
+
+    public Association( User user, Role role, Course course, Period period ){
+        userRole = new UserRole( );
+        userRole.setUser( user );
+        userRole.setRole( role );
+        this.course = course;
+        this.period = period;
+    }
 
     /**
      * Getters and Setters
@@ -100,12 +110,12 @@ public class Association implements Serializable{
         this.userRole.setRole( role );
     }
 
-    public List<Grade> getGrades( ){
-        return grades;
+    public Grade getGrade( ){
+        return grade;
     }
 
-    public void setGrades( List<Grade> grades ){
-        this.grades = grades;
+    public void setGrade( Grade grade ){
+        this.grade = grade;
     }
 
     UserRole getUserRole( ){
