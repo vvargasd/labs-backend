@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,10 +15,14 @@ import java.util.List;
 @Table( name = "role", schema = "public" )
 public class Role implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+    private final static long serialVersionUID = 1L;
+    private final static int ROLE_STUDENT_ID = 1;
+    private final static String ROLE_STUDENT_NAME = "Estudiante";
+    private final static int ROLE_TEACHER_ID = 2;
+    private final static String ROLE_TEACHER_NAME = "Profesor";
 
-    public final static int ROLE_STUDENT = 1;
-    public final static int ROLE_TEACHER = 2;
+    private final static Role STUDENT = new Role( ROLE_STUDENT_ID, ROLE_STUDENT_NAME );
+    private final static Role TEACHER = new Role( ROLE_TEACHER_ID, ROLE_TEACHER_NAME );
 
     /**
      * Attributes
@@ -40,6 +45,12 @@ public class Role implements Serializable{
      */
 
     public Role( ){ }
+
+    private Role( Integer id, String roleName ){
+        this.id = id;
+        this.roleName = roleName;
+        this.users = new ArrayList<>( );
+    }
 
     /**
      * Getters and Setters
@@ -72,6 +83,16 @@ public class Role implements Serializable{
     /**
      * Methods
      */
+
+    public static Role getStudent( ){
+        return STUDENT;
+    }
+
+    public static Role getTeacher( ){
+        return TEACHER;
+    }
+
+
 
     @Override
     public boolean equals( Object object ){
