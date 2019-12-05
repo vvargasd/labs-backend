@@ -31,17 +31,17 @@ public class StudentController{
 
     @PostMapping( value = { "/estudiante/inscribir/periodo/{periodId}/curso/{courseId}" } )
     public ResponseEntity associateStudent( @PathVariable Integer periodId, @PathVariable Integer courseId ){
-        String username = SecurityContextHolder.getContext( ).getAuthentication( ).getName( );
-        User student = userService.findByUsername( username );
         Course course = courseService.findById( courseId );
         Period period = periodService.findById( periodId );
-        Role role = new Role( );
 
         if( course == null || period == null ){
             return new ResponseEntity( HttpStatus.BAD_REQUEST );
         }
 
-        role.setId( Role.ROLE_STUDENT );
+        String username = SecurityContextHolder.getContext( ).getAuthentication( ).getName( );
+        User student = userService.findByUsername( username );
+        Role role = Role.getStudent( );
+
         associationService.associate( student, role, course, period );
 
         return new ResponseEntity( HttpStatus.CREATED );
