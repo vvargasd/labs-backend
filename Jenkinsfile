@@ -9,18 +9,18 @@ pipeline {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
                 '''
+            }
+        }
+        stage ('Git'){
+            steps{
+                git poll: true,
+                url: 'https://github.com/software-engineering-II/labs-backend.git'
             }
         }
         stage ('Build') {
             steps {
                 sh 'mvn clean install package spring-boot:repackage'
-            }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml'
-                }
             }
         }
     }
