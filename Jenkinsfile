@@ -12,12 +12,6 @@ pipeline {
                 '''
             }
         }
-        stage ('Git'){
-            steps{
-                git poll: true,
-                url: 'https://github.com/software-engineering-II/labs-backend.git'
-            }
-        }
         stage ('Build') {
             steps {
                 sh 'mvn clean install package spring-boot:repackage'
