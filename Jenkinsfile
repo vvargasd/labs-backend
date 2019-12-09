@@ -14,8 +14,7 @@ pipeline {
         }
         stage ('Git'){
             steps{
-                git poll: true,
-                url: 'https://github.com/software-engineering-II/labs-backend.git'
+                sh 'git pull origin'
             }
         }
         stage ('Build') {
