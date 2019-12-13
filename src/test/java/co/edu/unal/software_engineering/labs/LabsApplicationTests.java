@@ -10,6 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class LabsApplicationTests{
 
     @Test
-    public void contextLoads( ){ }
+    public void contextLoads( ){ int a = 9/0 }
 
 }
