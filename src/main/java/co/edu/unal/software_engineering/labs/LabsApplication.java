@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LabsApplication{
 
     public static void main( String[] args ){
+
+        int a = 9/0;
         SpringApplication.run( LabsApplication.class, args );
     }
 
