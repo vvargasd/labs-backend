@@ -8,7 +8,7 @@ public class LabsApplication{
 
     public static void main( String[] args ){
 
-        int a = 9/0;
+        int a = 1;
         SpringApplication.run( LabsApplication.class, args );
     }
 
